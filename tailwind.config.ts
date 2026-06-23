@@ -67,7 +67,7 @@ const config: Config = {
           '33%': { transform: 'translate(30px, 40px) scale(1.05)' },
           '66%': { transform: 'translate(-60px, -30px) scale(0.95)' },
         },
-        'shimmer': {
+        shimmer: {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
         },
@@ -77,7 +77,7 @@ const config: Config = {
         'blob-1': 'blob-1 28s ease-in-out infinite',
         'blob-2': 'blob-2 35s ease-in-out infinite',
         'blob-3': 'blob-3 32s ease-in-out infinite',
-        'shimmer': 'shimmer 3s linear infinite',
+        shimmer: 'shimmer 3s linear infinite',
       },
     },
   },

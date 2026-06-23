@@ -21,10 +21,7 @@ export function HeroBackground() {
   }, []);
 
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-    >
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       {/* 基础渐变底色 */}
       <div className="absolute inset-0 bg-gradient-to-br from-bg-base via-bg-base to-bg-elevated" />
 
@@ -35,23 +32,21 @@ export function HeroBackground() {
           backgroundImage:
             'linear-gradient(to right, rgba(0,0,0,0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.5) 1px, transparent 1px)',
           backgroundSize: '40px 40px',
-          maskImage:
-            'radial-gradient(ellipse at center, black 30%, transparent 80%)',
-          WebkitMaskImage:
-            'radial-gradient(ellipse at center, black 30%, transparent 80%)',
+          maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 80%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 80%)',
         }}
       />
 
       {/* Aurora 色块 1：accent 紫（主色调，左上） */}
       <div
-        className={`absolute -top-32 -left-32 h-[600px] w-[600px] rounded-full bg-accent/35 blur-[120px] ${
+        className={`absolute -left-32 -top-32 h-[600px] w-[600px] rounded-full bg-accent/35 blur-[120px] ${
           reducedMotion ? '' : 'animate-blob-1'
         }`}
       />
 
       {/* Aurora 色块 2：violet 紫（右上） */}
       <div
-        className={`absolute top-1/4 -right-40 h-[500px] w-[500px] rounded-full bg-violet-400/25 blur-[140px] ${
+        className={`absolute -right-40 top-1/4 h-[500px] w-[500px] rounded-full bg-violet-400/25 blur-[140px] ${
           reducedMotion ? '' : 'animate-blob-2'
         }`}
       />
@@ -65,7 +60,7 @@ export function HeroBackground() {
 
       {/* Aurora 色块 4：emerald 绿（角落点缀） */}
       <div
-        className={`absolute top-2/3 right-1/4 h-[300px] w-[300px] rounded-full bg-emerald-300/15 blur-[100px] ${
+        className={`absolute right-1/4 top-2/3 h-[300px] w-[300px] rounded-full bg-emerald-300/15 blur-[100px] ${
           reducedMotion ? '' : 'animate-blob-1'
         }`}
       />
