@@ -1,0 +1,38 @@
+/* Design Tokens - 暗色主题 CSS 变量
+ * 颜色使用 RGB channel 格式以支持 Tailwind 透明度修饰 (bg-color/30 等)
+ */
+
+:root {
+  /* 背景层级 */
+  --bg-base-rgb: 10 10 11;
+  --bg-elevated-rgb: 19 19 22;
+  --bg-overlay-rgb: 28 28 33;
+
+  /* 文字层级 */
+  --text-primary-rgb: 237 237 238;
+  --text-secondary-rgb: 160 160 168;
+  --text-muted-rgb: 107 107 115;
+
+  /* 边框 */
+  --border-subtle-rgb: 31 31 36;
+  --border-default-rgb: 42 42 48;
+
+  /* 强调色 */
+  --accent-rgb: 99 102 241;
+  --accent-hover-rgb: 129 140 248;
+  --accent-glow-rgb: 99 102 241;
+
+  /* 圆角 */
+  --radius-sm: 6px;
+  --radius: 12px;
+  --radius-lg: 20px;
+
+  /* 字体变量（由 next/font 在 layout 中赋值） */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Geist', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-cn: 'Noto Sans SC', system-ui, sans-serif;
+
+  /* 过渡曲线 */
+  --ease-out-expo: cubic-bezier(0.21, 0.47, 0.32, 0.98);
+}

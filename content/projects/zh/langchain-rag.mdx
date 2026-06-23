@@ -1,0 +1,53 @@
+---
+title: LangChain RAG 助手
+slug: langchain-rag
+description: 基于 LangChain + pgvector 构建的私有知识库问答系统，支持多源文档检索和流式响应
+cover: /projects/langchain-rag/cover.png
+tags: [LangChain, RAG, pgvector, TypeScript, AI]
+date: 2025-03-15
+featured: true
+external: https://github.com/jiaiiac/langchain-rag
+order: 1
+---
+
+## 项目背景
+
+企业内部知识分散在 Confluence、Notion、Google Drive 等多个平台，员工查找信息效率低下。本项目基于 RAG（Retrieval-Augmented Generation）架构，构建了一个统一的智能问答入口。
+
+## 技术架构
+
+```
+用户问题
+   ↓
+Query Rewriting（查询改写）
+   ↓
+Hybrid Retrieval（关键词 + 向量混合检索）
+   ↓
+Re-ranking（Cohere Rerank）
+   ↓
+Context Compression（上下文压缩）
+   ↓
+LLM 生成（GPT-4 / Claude）
+   ↓
+流式响应 + 来源标注
+```
+
+## 核心特性
+
+- **多源文档接入**：支持 PDF、Markdown、Notion API、Google Drive
+- **混合检索**：BM25 关键词 + pgvector 向量检索，长文档场景准确率提升 23%
+- **查询改写**：基于对话历史自动补全省略主语、改写指代
+- **流式响应**：Server-Sent Events 实现打字机效果
+- **来源可追溯**：每个回答附带引用片段和置信度评分
+
+## 技术栈
+
+- **后端**：FastAPI + LangChain + pgvector
+- **前端**：Next.js + Server Components
+- **部署**：Vercel + Supabase + Upstash Redis
+
+## 后续优化方向
+
+- 引入 Agent 自主决定是否需要多轮检索
+- 加入用户反馈闭环，持续优化检索质量
+- 探索 GraphRAG 处理复杂关系型查询

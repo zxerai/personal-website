@@ -1,0 +1,53 @@
+---
+title: LangChain RAG Assistant
+slug: langchain-rag
+description: A private knowledge base Q&A system built with LangChain + pgvector, supporting multi-source document retrieval and streaming responses
+cover: /projects/langchain-rag/cover.png
+tags: [LangChain, RAG, pgvector, TypeScript, AI]
+date: 2025-03-15
+featured: true
+external: https://github.com/jiaiiac/langchain-rag
+order: 1
+---
+
+## Background
+
+Enterprise knowledge is scattered across Confluence, Notion, Google Drive, and other platforms, making information lookup inefficient. This project uses RAG (Retrieval-Augmented Generation) to build a unified intelligent Q&A entry point.
+
+## Architecture
+
+```
+User Query
+   ↓
+Query Rewriting
+   ↓
+Hybrid Retrieval (keyword + vector)
+   ↓
+Re-ranking (Cohere Rerank)
+   ↓
+Context Compression
+   ↓
+LLM Generation (GPT-4 / Claude)
+   ↓
+Streaming Response + Source Citations
+```
+
+## Key Features
+
+- **Multi-source ingestion**: PDF, Markdown, Notion API, Google Drive
+- **Hybrid retrieval**: BM25 keyword + pgvector vector retrieval, +23% accuracy on long documents
+- **Query rewriting**: Auto-completes omitted subjects and rewrites references based on conversation history
+- **Streaming response**: Server-Sent Events for typewriter effect
+- **Source attribution**: Each answer includes cited snippets and confidence scores
+
+## Tech Stack
+
+- **Backend**: FastAPI + LangChain + pgvector
+- **Frontend**: Next.js + Server Components
+- **Deployment**: Vercel + Supabase + Upstash Redis
+
+## Future Work
+
+- Introduce Agent to autonomously decide on multi-round retrieval
+- Add user feedback loop to continuously improve retrieval quality
+- Explore GraphRAG for complex relational queries

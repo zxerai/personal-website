@@ -1,0 +1,61 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "blog": "Blog",
+    "resume": "Resume",
+    "about": "About"
+  },
+  "home": {
+    "hero_greeting": "Hi, I'm",
+    "hero_name": "Jin",
+    "hero_tagline": "AI Engineer / Building Intelligent Applications",
+    "hero_description": "Focused on LLM applications, agent orchestration, and product engineering. Making AI usable, trustworthy, and scalable.",
+    "cta_projects": "View Projects",
+    "cta_blog": "Read Blog",
+    "featured_projects": "Featured Projects",
+    "view_all_projects": "View All Projects",
+    "recent_blog": "Recent Posts",
+    "view_all_blog": "View All Posts",
+    "lets_connect": "Let's Connect"
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "Things I've built with code",
+    "filter_all": "All",
+    "view_project": "View Project",
+    "view_demo": "View Demo",
+    "view_code": "Source Code",
+    "no_projects": "No projects yet"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Thoughts on AI, engineering, and product",
+    "reading_time": "min read",
+    "no_posts": "No posts yet",
+    "back_to_blog": "Back to Blog",
+    "table_of_contents": "Table of Contents"
+  },
+  "resume": {
+    "title": "Resume",
+    "subtitle": "My professional experience and skills",
+    "experience": "Experience",
+    "education": "Education",
+    "skills": "Skills",
+    "download_pdf": "Download PDF"
+  },
+  "about": {
+    "title": "About",
+    "subtitle": "An AI engineer's self-introduction"
+  },
+  "common": {
+    "coming_soon": "Coming soon",
+    "not_available": "N/A",
+    "fallback_notice": "This language version is not available. Showing Chinese."
+  },
+  "404": {
+    "title": "Page Not Found",
+    "description": "Sorry, this page doesn't exist or has been moved.",
+    "back_home": "Back to Home"
+  }
+}

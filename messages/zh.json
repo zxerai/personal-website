@@ -1,0 +1,61 @@
+{
+  "nav": {
+    "home": "首页",
+    "projects": "项目",
+    "blog": "博客",
+    "resume": "简历",
+    "about": "关于"
+  },
+  "home": {
+    "hero_greeting": "你好，我是",
+    "hero_name": "老金",
+    "hero_tagline": "AI 工程师 / 构建智能应用",
+    "hero_description": "专注于大模型应用、Agent 编排与产品工程，致力于让 AI 真正可用、可信、可规模化。",
+    "cta_projects": "查看项目",
+    "cta_blog": "读读博客",
+    "featured_projects": "精选项目",
+    "view_all_projects": "查看全部项目",
+    "recent_blog": "最新文章",
+    "view_all_blog": "查看全部文章",
+    "lets_connect": "建立连接"
+  },
+  "projects": {
+    "title": "项目",
+    "subtitle": "我用代码构建的东西",
+    "filter_all": "全部",
+    "view_project": "查看项目",
+    "view_demo": "查看 Demo",
+    "view_code": "源代码",
+    "no_projects": "暂无项目"
+  },
+  "blog": {
+    "title": "博客",
+    "subtitle": "关于 AI、工程与产品的思考",
+    "reading_time": "分钟阅读",
+    "no_posts": "暂无文章",
+    "back_to_blog": "返回博客",
+    "table_of_contents": "目录"
+  },
+  "resume": {
+    "title": "简历",
+    "subtitle": "我的职业经历与技能",
+    "experience": "工作经历",
+    "education": "教育背景",
+    "skills": "技能",
+    "download_pdf": "下载 PDF"
+  },
+  "about": {
+    "title": "关于我",
+    "subtitle": "一个 AI 工程师的自我介绍"
+  },
+  "common": {
+    "coming_soon": "敬请期待",
+    "not_available": "暂无",
+    "fallback_notice": "暂无此语言版本，显示中文"
+  },
+  "404": {
+    "title": "页面未找到",
+    "description": "抱歉，这个页面不存在或已被移除。",
+    "back_home": "回到首页"
+  }
+}
