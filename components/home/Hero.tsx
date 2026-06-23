@@ -16,17 +16,14 @@ export function Hero({ locale: _locale }: { locale: string }) {
   // 鼠标位置 → 3D 倾斜角度（用 spring 平滑）
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], ['8deg', '-8deg']), {
-    stiffness: 150,
-    damping: 20,
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], ['6deg', '-6deg']), {
+    stiffness: 180,
+    damping: 22,
   });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], ['-8deg', '8deg']), {
-    stiffness: 150,
-    damping: 20,
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], ['-6deg', '6deg']), {
+    stiffness: 180,
+    damping: 22,
   });
-  // 光泽跟随鼠标
-  const sheenX = useTransform(mouseX, [-0.5, 0.5], ['20%', '80%']);
-  const sheenY = useTransform(mouseY, [-0.5, 0.5], ['20%', '80%']);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -63,16 +60,6 @@ export function Hero({ locale: _locale }: { locale: string }) {
             style={{ perspective: '1200px' }}
             className="relative"
           >
-            {/* 静态装饰层（光晕） */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -inset-x-8 -inset-y-4 -z-10 rounded-3xl opacity-60 blur-3xl"
-              style={{
-                background:
-                  'radial-gradient(ellipse at center, rgba(99, 102, 241, 0.18), transparent 70%)',
-              }}
-            />
-
             {/* 3D 倾斜 + 浮雕文字 */}
             <motion.h1
               style={{
@@ -80,14 +67,14 @@ export function Hero({ locale: _locale }: { locale: string }) {
                 rotateY: reducedMotion ? 0 : rotateY,
                 transformStyle: 'preserve-3d',
               }}
-              className={`font-display text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl lg:text-8xl text-3d ${
+              className={`text-3d font-display text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl lg:text-8xl ${
                 reducedMotion ? '' : 'animate-float'
               }`}
             >
-              {/* 渐变文字层（用 mask 实现，避免 bg-clip-text 破坏子元素） */}
+              {/* 渐变文字（黑 → 紫，避免 bg-clip-text 失效） */}
               <span
-                className="bg-gradient-to-br from-text-primary via-text-primary to-accent bg-clip-text text-transparent"
                 style={{
+                  background: 'linear-gradient(135deg, #18181b 0%, #18181b 60%, #6366f1 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -95,26 +82,6 @@ export function Hero({ locale: _locale }: { locale: string }) {
               >
                 <Typewriter text={t('hero_name')} delay={0.2} />
               </span>
-
-              {/* 鼠标光泽叠加层（仅 reduce motion 不启用时显示） */}
-              {!reducedMotion && (
-                <motion.span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 bg-clip-text text-transparent"
-                  style={{
-                    backgroundImage:
-                      'radial-gradient(circle at var(--sheen-x, 50%) var(--sheen-y, 50%), rgba(255,255,255,0.7) 0%, transparent 40%)',
-                    backgroundSize: '200% 200%',
-                    backgroundPosition: `${sheenX.get()} ${sheenY.get()}`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    mixBlendMode: 'overlay',
-                  }}
-                >
-                  <Typewriter text={t('hero_name')} delay={0.2} />
-                </motion.span>
-              )}
             </motion.h1>
           </div>
 
