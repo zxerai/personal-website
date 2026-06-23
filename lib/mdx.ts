@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import matter from 'gray-matter';
+import GithubSlugger from 'github-slugger';
 import { projectSchema, type Project } from './schemas/project';
 import { blogSchema, type BlogPost } from './schemas/blog';
 import { siteConfig, type Locale } from './utils';
@@ -198,52 +199,35 @@ export interface Heading {
 
 /**
  * 从 MDX 文本中提取 ## 和 ### 标题
- * - 跳过代码块（```...```) 和前置 frontmatter
- * - id 由 text slugify 生成（lowercase + 非字母数字转 - + 合并 -）
+ * 使用 github-slugger（与 rehype-slug 一致）保证 TOC href 与 heading id 完全匹配
  */
 export function extractHeadings(content: string): Heading[] {
-  // 去掉前置 frontmatter（如果有）
   const stripped = content.replace(/^---[\s\S]*?---\s*/, '');
 
   const headings: Heading[] = [];
-  // 简单行扫描：识别 ## 和 ###，跳过代码块和 HTML 块
   const lines = stripped.split('\n');
   let inCodeBlock = false;
 
+  const slugger = new GithubSlugger();
+
   for (const line of lines) {
-    // 跟踪围栏代码块
     if (line.trim().startsWith('```')) {
       inCodeBlock = !inCodeBlock;
       continue;
     }
     if (inCodeBlock) continue;
 
-    // 跳过 JSX/MDX 表达式中的 #（避免误判）
-    if (line.includes('<') && line.includes('>')) {
-      // 仍然允许简单的纯标题行
-      const trimmed = line.trim();
-      if (!trimmed.startsWith('##')) continue;
-    }
-
     const match = line.match(/^(#{2,3})\s+(.+?)\s*$/);
     if (match) {
       const level = match[1].length as 2 | 3;
-      const text = match[2]
-        .replace(/[*_`]/g, '') // 去掉 markdown 强调符
-        .replace(/\[(.+?)\]\(.+?\)/g, '$1') // 提取链接文本
+      const rawText = match[2];
+      const text = rawText
+        .replace(/[*_`]/g, '')
+        .replace(/\[(.+?)\]\(.+?\)/g, '$1')
         .trim();
-      const id = slugify(text);
+      const id = slugger.slug(text);
       headings.push({ id, text, level });
     }
   }
   return headings;
-}
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[一-龥]+/g, (m) => m) // 中文保留
-    .replace(/[^a-z0-9一-龥]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .replace(/-{2,}/g, '-');
 }
