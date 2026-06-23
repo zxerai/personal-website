@@ -4,18 +4,18 @@
 
 :root {
   /* 背景层级 */
-  --bg-base-rgb: 10 10 11;
-  --bg-elevated-rgb: 19 19 22;
-  --bg-overlay-rgb: 28 28 33;
+  --bg-base-rgb: 255 255 255;
+  --bg-elevated-rgb: 245 245 247;
+  --bg-overlay-rgb: 235 235 240;
 
   /* 文字层级 */
-  --text-primary-rgb: 237 237 238;
-  --text-secondary-rgb: 160 160 168;
-  --text-muted-rgb: 107 107 115;
+  --text-primary-rgb: 24 24 27;
+  --text-secondary-rgb: 80 80 88;
+  --text-muted-rgb: 120 120 128;
 
   /* 边框 */
-  --border-subtle-rgb: 31 31 36;
-  --border-default-rgb: 42 42 48;
+  --border-subtle-rgb: 230 230 235;
+  --border-default-rgb: 210 210 215;
 
   /* 强调色 */
   --accent-rgb: 99 102 241;
