@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote/rsc';
+import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
@@ -100,12 +101,13 @@ export default async function BlogPostPage({ params }: Props) {
           </FadeIn>
 
           <FadeIn delay={0.2}>
-            <div className="prose prose-slate max-w-none prose-headings:scroll-mt-20 prose-headings:font-display prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-text-primary prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover prose-a:font-medium prose-strong:text-text-primary prose-code:text-accent prose-code:bg-bg-elevated prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-normal prose-code:before:content-none prose-code:after:content-none prose-blockquote:border-l-accent prose-blockquote:bg-accent/5 prose-blockquote:not-italic prose-blockquote:text-text-secondary prose-li:text-text-secondary prose-hr:border-border-subtle prose-img:rounded-lg prose-table:border-collapse">
+            <div className="prose prose-slate max-w-none prose-headings:scroll-mt-20 prose-headings:font-display prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-text-primary prose-p:leading-relaxed prose-p:text-text-secondary prose-a:font-medium prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover prose-blockquote:border-l-accent prose-blockquote:bg-accent/5 prose-blockquote:not-italic prose-blockquote:text-text-secondary prose-strong:text-text-primary prose-code:rounded prose-code:bg-bg-elevated prose-code:px-1.5 prose-code:py-0.5 prose-code:font-normal prose-code:text-accent prose-code:before:content-none prose-code:after:content-none prose-li:text-text-secondary prose-table:border-collapse prose-img:rounded-lg prose-hr:border-border-subtle">
               <MDXRemote
                 source={content}
                 components={mdxComponents}
                 options={{
                   mdxOptions: {
+                    remarkPlugins: [remarkGfm],
                     rehypePlugins: [
                       rehypeSlug,
                       [

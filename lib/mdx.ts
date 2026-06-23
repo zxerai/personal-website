@@ -123,7 +123,12 @@ export async function getBlogPosts(locale: Locale): Promise<BlogPost[]> {
 export async function getBlogPost(
   slug: string,
   locale: Locale
-): Promise<{ frontmatter: BlogPost; content: string; availableLocales: Locale[]; headings: Heading[] } | null> {
+): Promise<{
+  frontmatter: BlogPost;
+  content: string;
+  availableLocales: Locale[];
+  headings: Heading[];
+} | null> {
   const availableLocales: Locale[] = [];
   for (const loc of siteConfig.supportedLocales) {
     const filePath = path.join(blogDir(loc), `${slug}.mdx`);
@@ -224,8 +229,8 @@ export function extractHeadings(content: string): Heading[] {
     if (match) {
       const level = match[1].length as 2 | 3;
       const text = match[2]
-        .replace(/[*_`]/g, '')   // 去掉 markdown 强调符
-        .replace(/\[(.+?)\]\(.+?\)/g, '$1')  // 提取链接文本
+        .replace(/[*_`]/g, '') // 去掉 markdown 强调符
+        .replace(/\[(.+?)\]\(.+?\)/g, '$1') // 提取链接文本
         .trim();
       const id = slugify(text);
       headings.push({ id, text, level });
@@ -237,7 +242,7 @@ export function extractHeadings(content: string): Heading[] {
 function slugify(text: string): string {
   return text
     .toLowerCase()
-    .replace(/[一-龥]+/g, (m) => m)  // 中文保留
+    .replace(/[一-龥]+/g, (m) => m) // 中文保留
     .replace(/[^a-z0-9一-龥]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .replace(/-{2,}/g, '-');

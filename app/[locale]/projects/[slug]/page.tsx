@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote/rsc';
+import remarkGfm from 'remark-gfm';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { getProject, getProjects } from '@/lib/mdx';
 import { siteConfig, formatDate, type Locale } from '@/lib/utils';
@@ -90,7 +91,11 @@ export default async function ProjectDetailPage({ params }: Props) {
 
       <FadeIn delay={0.2}>
         <div className="prose prose-invert max-w-none">
-          <MDXRemote source={content} components={mdxComponents} />
+          <MDXRemote
+            source={content}
+            components={mdxComponents}
+            options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+          />
         </div>
       </FadeIn>
     </article>
