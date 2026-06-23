@@ -37,10 +37,10 @@ export default async function AboutPage({ params: { locale } }: Props) {
       <FadeIn delay={0.2}>
         <div className="prose prose-invert max-w-none">
           <MDXRemote
-          source={about.content}
-          components={mdxComponents}
-          options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
-        />
+            source={about.content}
+            components={mdxComponents}
+            options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+          />
         </div>
       </FadeIn>
     </div>

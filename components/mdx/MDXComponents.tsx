@@ -14,6 +14,12 @@ export const mdxComponents = {
   pre: CodeBlock,
   // 智能链接（自动判断外链）
   a: SmartLink,
+  // 表格：包在横向滚动容器里
+  table: (props: any) => (
+    <div className="prose-table-wrapper">
+      <table {...props} />
+    </div>
+  ),
   // 标题自动加锚点
   h1: (props: any) => <Heading level={1} {...props} />,
   h2: (props: any) => <Heading level={2} {...props} />,

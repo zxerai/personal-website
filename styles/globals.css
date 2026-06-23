@@ -107,6 +107,84 @@
   }
 }
 
+/* ==========================================================================
+   Prose 内容增强（覆盖 @tailwindcss/typography 默认样式，匹配站点设计）
+   ========================================================================== */
+@layer components {
+  /* 表格：圆角边框 + 表头底色 + 斑马纹 + 滚动容器 */
+  .prose table {
+    @apply w-full text-sm my-6 border-collapse;
+  }
+
+  .prose thead {
+    @apply border-b-2 border-border-default;
+  }
+
+  .prose thead th {
+    @apply px-4 py-3 text-left font-semibold text-text-primary bg-bg-elevated/50 first:rounded-tl-lg last:rounded-tr-lg;
+  }
+
+  .prose tbody tr {
+    @apply border-b border-border-subtle transition-colors hover:bg-bg-elevated/30;
+  }
+
+  .prose tbody tr:last-child {
+    @apply border-b-0;
+  }
+
+  .prose tbody tr:last-child td:first-child {
+    @apply rounded-bl-lg;
+  }
+
+  .prose tbody tr:last-child td:last-child {
+    @apply rounded-br-lg;
+  }
+
+  /* 斑马纹（奇数行浅灰底） */
+  .prose tbody tr:nth-child(odd) {
+    @apply bg-bg-overlay/20;
+  }
+
+  .prose tbody td {
+    @apply px-4 py-3 text-text-secondary align-top;
+  }
+
+  /* 表格内的代码片段不要太大 */
+  .prose table code {
+    @apply text-xs;
+  }
+
+  /* 表格容器：宽表横向滚动 + 圆角边框 + 阴影 */
+  .prose-table-wrapper {
+    @apply my-6 overflow-x-auto rounded-lg border border-border-subtle shadow-sm;
+  }
+
+  /* 文章列表项更紧凑 */
+  .prose ul > li,
+  .prose ol > li {
+    @apply my-1.5;
+  }
+
+  .prose ul > li > p,
+  .prose ol > li > p {
+    @apply my-1;
+  }
+
+  /* 分隔线 */
+  .prose hr {
+    @apply my-10 border-border-subtle;
+  }
+
+  /* 引用块更精致 */
+  .prose blockquote {
+    @apply not-italic font-normal;
+  }
+
+  .prose blockquote p {
+    @apply my-2;
+  }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
