@@ -61,28 +61,11 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
     };
   }, [headings]);
 
-  // 处理目录点击：用 Lenis 平滑滚动（接管原生 anchor）
-  const handleLinkClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-      e.preventDefault();
-      const target = document.getElementById(id);
-      if (!target) return;
-
-      if (lenis) {
-        lenis.scrollTo(target, { offset: SCROLL_OFFSET });
-      } else {
-        // Lenis 不可用时降级到原生滚动
-        const top = target.getBoundingClientRect().top + window.scrollY + SCROLL_OFFSET;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
-
-      // 立即更新 active（不等 observer）
-      setActiveId(id);
-      // 同步 URL hash（不触发原生跳转）
-      history.replaceState(null, '', `#${id}`);
-    },
-    [lenis]
-  );
+  // 处理目录点击：交给 LenisProvider 的全局 click 监听处理
+  // 这里只需要更新 active 状态即可
+  const handleLinkClick = useCallback((id: string) => {
+    setActiveId(id);
+  }, []);
 
   const handleTopClick = useCallback(() => {
     if (lenis) {
@@ -132,7 +115,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
             <li key={heading.id} className={cn('relative', isH3 && 'ml-3.5')}>
               <a
                 href={`#${heading.id}`}
-                onClick={(e) => handleLinkClick(e, heading.id)}
+                onClick={() => handleLinkClick(heading.id)}
                 className={cn(
                   'block cursor-pointer border-l-2 py-1.5 pl-3 pr-2 leading-snug transition-all duration-200',
                   'scroll-mt-24',
