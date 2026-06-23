@@ -1,5 +1,6 @@
 import { setRequestLocale } from 'next-intl/server';
 import { Hero } from '@/components/home/Hero';
+import { HeroBackground } from '@/components/home/HeroBackground';
 import { FeaturedProjects } from '@/components/home/FeaturedProjects';
 import { RecentBlog } from '@/components/home/RecentBlog';
 import { getProjects, getBlogPosts } from '@/lib/mdx';
@@ -17,7 +18,10 @@ export default async function HomePage({ params: { locale } }: Props) {
 
   return (
     <>
-      <Hero locale={locale} />
+      <section className="relative overflow-hidden">
+        <HeroBackground />
+        <Hero locale={locale} />
+      </section>
       <FeaturedProjects projects={projects} locale={locale} />
       <RecentBlog posts={posts} locale={locale} />
     </>

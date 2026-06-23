@@ -52,9 +52,32 @@ const config: Config = {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        'blob-1': {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '33%': { transform: 'translate(60px, -50px) scale(1.1)' },
+          '66%': { transform: 'translate(-40px, 30px) scale(0.95)' },
+        },
+        'blob-2': {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '33%': { transform: 'translate(-50px, 60px) scale(0.9)' },
+          '66%': { transform: 'translate(40px, -40px) scale(1.1)' },
+        },
+        'blob-3': {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '33%': { transform: 'translate(30px, 40px) scale(1.05)' },
+          '66%': { transform: 'translate(-60px, -30px) scale(0.95)' },
+        },
+        'shimmer': {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
       },
       animation: {
         'fade-in-up': 'fade-in-up 0.6s cubic-bezier(0.21, 0.47, 0.32, 0.98)',
+        'blob-1': 'blob-1 28s ease-in-out infinite',
+        'blob-2': 'blob-2 35s ease-in-out infinite',
+        'blob-3': 'blob-3 32s ease-in-out infinite',
+        'shimmer': 'shimmer 3s linear infinite',
       },
     },
   },
