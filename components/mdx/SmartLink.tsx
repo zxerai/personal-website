@@ -14,13 +14,7 @@ export function SmartLink({ href, children, className, ...props }: SmartLinkProp
 
   if (isExternal) {
     return (
-      <a
-        href={safeHref}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={className}
-        {...props}
-      >
+      <a href={safeHref} target="_blank" rel="noopener noreferrer" className={className} {...props}>
         {children}
         <span className="ml-0.5 inline-block text-[0.7em] opacity-60">↗</span>
       </a>

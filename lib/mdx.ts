@@ -7,8 +7,7 @@ import { siteConfig, type Locale } from './utils';
 
 const CONTENT_ROOT = path.join(process.cwd(), 'content');
 
-const projectsDir = (locale: string) =>
-  path.join(CONTENT_ROOT, 'projects', locale);
+const projectsDir = (locale: string) => path.join(CONTENT_ROOT, 'projects', locale);
 
 const blogDir = (locale: string) => path.join(CONTENT_ROOT, 'blog', locale);
 
@@ -92,9 +91,7 @@ export async function getProject(
 
   if (availableLocales.length === 0) return null;
 
-  const targetLocale = availableLocales.includes(locale)
-    ? locale
-    : siteConfig.defaultLocale;
+  const targetLocale = availableLocales.includes(locale) ? locale : siteConfig.defaultLocale;
 
   const filePath = path.join(projectsDir(targetLocale), `${slug}.mdx`);
   const raw = await fs.readFile(filePath, 'utf-8');
@@ -137,9 +134,7 @@ export async function getBlogPost(
 
   if (availableLocales.length === 0) return null;
 
-  const targetLocale = availableLocales.includes(locale)
-    ? locale
-    : siteConfig.defaultLocale;
+  const targetLocale = availableLocales.includes(locale) ? locale : siteConfig.defaultLocale;
 
   const filePath = path.join(blogDir(targetLocale), `${slug}.mdx`);
   const raw = await fs.readFile(filePath, 'utf-8');
@@ -161,9 +156,7 @@ export async function getResume(
 
   if (availableLocales.length === 0) return null;
 
-  const targetLocale = availableLocales.includes(locale)
-    ? locale
-    : siteConfig.defaultLocale;
+  const targetLocale = availableLocales.includes(locale) ? locale : siteConfig.defaultLocale;
 
   const content = await fs.readFile(resumeFile(targetLocale), 'utf-8');
   return { content, availableLocales };
@@ -181,9 +174,7 @@ export async function getAbout(
 
   if (availableLocales.length === 0) return null;
 
-  const targetLocale = availableLocales.includes(locale)
-    ? locale
-    : siteConfig.defaultLocale;
+  const targetLocale = availableLocales.includes(locale) ? locale : siteConfig.defaultLocale;
 
   const content = await fs.readFile(aboutFile(targetLocale), 'utf-8');
   return { content, availableLocales };

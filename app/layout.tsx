@@ -4,8 +4,8 @@ import { ReactNode } from 'react';
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'),
   title: {
-    default: '老金 / AI 工程师',
-    template: '%s / 老金',
+    default: 'jiaiiac / AI 工程师',
+    template: '%s / jiaiiac',
   },
   description: 'AI 工程师 / 构建智能应用',
   openGraph: {

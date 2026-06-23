@@ -12,9 +12,7 @@ type Props = {
 export default async function HomePage({ params: { locale } }: Props) {
   setRequestLocale(locale);
 
-  const projects = (await getProjects(locale as Locale))
-    .filter((p) => p.featured)
-    .slice(0, 3);
+  const projects = (await getProjects(locale as Locale)).filter((p) => p.featured).slice(0, 3);
   const posts = (await getBlogPosts(locale as Locale)).slice(0, 3);
 
   return (

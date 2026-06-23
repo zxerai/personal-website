@@ -13,12 +13,7 @@ interface MagneticProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
 /**
  * 磁性按钮：鼠标靠近时元素跟随移动
  */
-export function Magnetic({
-  children,
-  strength = 0.3,
-  className,
-  ...props
-}: MagneticProps) {
+export function Magnetic({ children, strength = 0.3, className, ...props }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);

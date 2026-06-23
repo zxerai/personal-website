@@ -28,10 +28,7 @@ async function dirExists(dir: string): Promise<boolean> {
   }
 }
 
-async function validateFile(
-  filePath: string,
-  schema: typeof projectSchema | typeof blogSchema
-) {
+async function validateFile(filePath: string, schema: typeof projectSchema | typeof blogSchema) {
   const raw = await fs.readFile(filePath, 'utf-8');
   const { data } = matter(raw);
 
@@ -48,10 +45,7 @@ async function validateFile(
   }
 }
 
-async function validateLocale(
-  locale: string,
-  type: 'project' | 'blog'
-): Promise<void> {
+async function validateLocale(locale: string, type: 'project' | 'blog'): Promise<void> {
   const dir = path.join(CONTENT_ROOT, type === 'project' ? 'projects' : 'blog', locale);
   if (!(await dirExists(dir))) {
     console.warn(`⚠️  ${type}/${locale} directory does not exist`);
@@ -63,11 +57,7 @@ async function validateLocale(
 
   const schema = type === 'project' ? projectSchema : blogSchema;
 
-  await Promise.all(
-    mdxFiles.map((file) =>
-      validateFile(path.join(dir, file), schema)
-    )
-  );
+  await Promise.all(mdxFiles.map((file) => validateFile(path.join(dir, file), schema)));
 }
 
 async function main() {

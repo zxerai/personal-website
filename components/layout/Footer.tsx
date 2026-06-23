@@ -39,10 +39,10 @@ export function Footer({ locale }: { locale: string }) {
         </div>
 
         <div className="mt-8 flex flex-col items-start justify-between gap-2 border-t border-border-subtle pt-6 text-xs text-text-muted md:flex-row md:items-center">
-          <p>© {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
           <p>
-            Built with Next.js · {locale === 'zh' ? '中文' : 'English'}
+            © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
+          <p>Built with Next.js · {locale === 'zh' ? '中文' : 'English'}</p>
         </div>
       </div>
     </footer>

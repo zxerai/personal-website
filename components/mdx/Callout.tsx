@@ -40,20 +40,12 @@ export function Callout({ type = 'info', title, children }: CalloutProps) {
   const style = styles[type];
 
   return (
-    <div
-      className={cn(
-        'my-6 rounded border-l-2 px-5 py-4',
-        style.bg,
-        style.border
-      )}
-    >
+    <div className={cn('my-6 rounded border-l-2 px-5 py-4', style.bg, style.border)}>
       <div className="mb-1 flex items-center gap-2 font-medium text-text-primary">
         <span className="text-base">{style.icon}</span>
         <span>{title || style.label}</span>
       </div>
-      <div className="text-sm leading-relaxed text-text-secondary [&>p]:m-0">
-        {children}
-      </div>
+      <div className="text-sm leading-relaxed text-text-secondary [&>p]:m-0">{children}</div>
     </div>
   );
 }

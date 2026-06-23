@@ -11,9 +11,7 @@ export default function NotFound() {
         <div className="font-display text-[8rem] font-bold leading-none tracking-tighter text-accent md:text-[12rem]">
           404
         </div>
-        <h1 className="mt-4 font-display text-2xl font-semibold md:text-3xl">
-          {t('title')}
-        </h1>
+        <h1 className="mt-4 font-display text-2xl font-semibold md:text-3xl">{t('title')}</h1>
         <p className="mt-2 text-text-secondary">{t('description')}</p>
 
         <Link

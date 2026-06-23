@@ -44,7 +44,7 @@ const config: Config = {
       },
       boxShadow: {
         'glow-accent': '0 0 24px rgb(var(--accent-rgb) / 0.15)',
-        'elevated': '0 8px 24px rgba(0, 0, 0, 0.4)',
+        elevated: '0 8px 24px rgba(0, 0, 0, 0.4)',
       },
       keyframes: {
         'fade-in-up': {

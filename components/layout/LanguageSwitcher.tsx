@@ -41,9 +41,7 @@ export function LanguageSwitcher({ currentLocale }: LanguageSwitcherProps) {
             aria-label={`Switch to ${locale === 'zh' ? 'Chinese' : 'English'}`}
             className={cn(
               'rounded px-2 py-1 font-mono uppercase tracking-wider transition-colors',
-              currentLocale === locale
-                ? 'text-accent'
-                : 'text-text-muted hover:text-text-primary',
+              currentLocale === locale ? 'text-accent' : 'text-text-muted hover:text-text-primary',
               isPending && 'opacity-50'
             )}
           >

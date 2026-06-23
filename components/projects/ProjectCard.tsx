@@ -47,9 +47,7 @@ export function ProjectCard({ project, locale, featured }: ProjectCardProps) {
       </div>
 
       <div className="mt-5 flex items-center justify-between text-sm">
-        <span className="text-text-muted">
-          {new Date(project.date).getFullYear()}
-        </span>
+        <span className="text-text-muted">{new Date(project.date).getFullYear()}</span>
         <span className="text-text-secondary transition-colors group-hover:text-accent">
           {t('view_project')} →
         </span>

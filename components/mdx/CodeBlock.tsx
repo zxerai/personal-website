@@ -50,9 +50,7 @@ export function CodeBlock({ children, className }: CodeBlockProps) {
           aria-label="Copy code"
           className={cn(
             'rounded px-2 py-1 font-mono text-xs transition-colors',
-            copied
-              ? 'text-accent'
-              : 'text-text-muted hover:text-text-primary'
+            copied ? 'text-accent' : 'text-text-muted hover:text-text-primary'
           )}
         >
           {copied ? '✓ Copied' : 'Copy'}

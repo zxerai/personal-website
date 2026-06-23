@@ -45,15 +45,11 @@ export function Navbar({ locale }: NavbarProps) {
                 href={item.href}
                 className={cn(
                   'relative rounded px-3 py-1.5 text-sm transition-colors',
-                  isActive
-                    ? 'text-text-primary'
-                    : 'text-text-secondary hover:text-text-primary'
+                  isActive ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'
                 )}
               >
                 {t(item.key as any)}
-                {isActive && (
-                  <span className="absolute -bottom-px left-3 right-3 h-px bg-accent" />
-                )}
+                {isActive && <span className="absolute -bottom-px left-3 right-3 h-px bg-accent" />}
               </Link>
             );
           })}

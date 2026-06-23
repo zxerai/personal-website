@@ -69,7 +69,9 @@ export default async function BlogPostPage({ params }: Props) {
                   {formatDate(frontmatter.date, params.locale === 'zh' ? 'zh-CN' : 'en-US')}
                 </time>
                 <span>·</span>
-                <span>{readingTime} {t('reading_time')}</span>
+                <span>
+                  {readingTime} {t('reading_time')}
+                </span>
               </div>
 
               <h1 className="font-display text-4xl font-bold leading-tight tracking-tight md:text-5xl">
