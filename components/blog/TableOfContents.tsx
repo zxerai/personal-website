@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
+import { useLenis } from '@/lib/lenis-context';
 
 interface Heading {
   id: string;
@@ -14,11 +15,14 @@ interface TableOfContentsProps {
   headings: Heading[];
 }
 
+const SCROLL_OFFSET = -96; // sticky navbar 高度 + 一点呼吸
+
 export function TableOfContents({ headings }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('');
   const [progress, setProgress] = useState<number>(0);
   const t = useTranslations('blog');
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const lenis = useLenis();
 
   // 跟踪滚动进度 + 同步 active heading
   useEffect(() => {
@@ -34,7 +38,6 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // IntersectionObserver: 跟踪当前可见的 heading
     observerRef.current = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -58,13 +61,47 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
     };
   }, [headings]);
 
+  // 处理目录点击：用 Lenis 平滑滚动（接管原生 anchor）
+  const handleLinkClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+      e.preventDefault();
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      if (lenis) {
+        lenis.scrollTo(target, { offset: SCROLL_OFFSET });
+      } else {
+        // Lenis 不可用时降级到原生滚动
+        const top = target.getBoundingClientRect().top + window.scrollY + SCROLL_OFFSET;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+
+      // 立即更新 active（不等 observer）
+      setActiveId(id);
+      // 同步 URL hash（不触发原生跳转）
+      history.replaceState(null, '', `#${id}`);
+    },
+    [lenis]
+  );
+
+  const handleTopClick = useCallback(() => {
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: false });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [lenis]);
+
   if (headings.length === 0) return null;
 
   const h2Count = headings.filter((h) => h.level === 2).length;
   const h3Count = headings.length - h2Count;
 
   return (
-    <nav aria-label="Table of contents" className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-2 -mr-2 scrollbar-thin">
+    <nav
+      aria-label="Table of contents"
+      className="scrollbar-thin sticky top-24 -mr-2 max-h-[calc(100vh-7rem)] overflow-y-auto pr-2"
+    >
       {/* 阅读进度条 */}
       <div className="mb-4">
         <div className="mb-2 flex items-baseline justify-between">
@@ -92,20 +129,15 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
           const isH3 = heading.level === 3;
 
           return (
-            <li
-              key={heading.id}
-              className={cn(
-                'relative',
-                isH3 && 'ml-3.5'
-              )}
-            >
+            <li key={heading.id} className={cn('relative', isH3 && 'ml-3.5')}>
               <a
                 href={`#${heading.id}`}
+                onClick={(e) => handleLinkClick(e, heading.id)}
                 className={cn(
-                  'block border-l-2 py-1.5 pl-3 pr-2 leading-snug transition-all duration-200',
+                  'block cursor-pointer border-l-2 py-1.5 pl-3 pr-2 leading-snug transition-all duration-200',
                   'scroll-mt-24',
                   isActive
-                    ? 'border-accent bg-accent/5 text-text-primary font-medium'
+                    ? 'border-accent bg-accent/5 font-medium text-text-primary'
                     : 'border-transparent text-text-muted hover:border-border-default hover:bg-bg-overlay/40 hover:text-text-secondary',
                   isH3 && !isActive && 'text-text-muted/80'
                 )}
@@ -120,7 +152,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
       {/* 底部装饰：返回顶部 */}
       <button
         type="button"
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        onClick={handleTopClick}
         className={cn(
           'mt-6 inline-flex items-center gap-1.5 rounded border border-border-subtle px-2.5 py-1',
           'font-mono text-[10px] uppercase tracking-wider text-text-muted transition-colors',
