@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote/rsc';
+import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { getBlogPost, getBlogPosts } from '@/lib/mdx';
 import { siteConfig, calculateReadingTime, formatDate, type Locale } from '@/lib/utils';
@@ -98,14 +100,31 @@ export default async function BlogPostPage({ params }: Props) {
           </FadeIn>
 
           <FadeIn delay={0.2}>
-            <div className="prose prose-invert max-w-none">
-              <MDXRemote source={content} components={mdxComponents} />
+            <div className="prose prose-slate max-w-none prose-headings:scroll-mt-20 prose-headings:font-display prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-text-primary prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover prose-a:font-medium prose-strong:text-text-primary prose-code:text-accent prose-code:bg-bg-elevated prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-normal prose-code:before:content-none prose-code:after:content-none prose-blockquote:border-l-accent prose-blockquote:bg-accent/5 prose-blockquote:not-italic prose-blockquote:text-text-secondary prose-li:text-text-secondary prose-hr:border-border-subtle prose-img:rounded-lg prose-table:border-collapse">
+              <MDXRemote
+                source={content}
+                components={mdxComponents}
+                options={{
+                  mdxOptions: {
+                    rehypePlugins: [
+                      rehypeSlug,
+                      [
+                        rehypeAutolinkHeadings,
+                        {
+                          behavior: 'wrap',
+                          properties: { className: ['no-underline'] },
+                        },
+                      ],
+                    ],
+                  },
+                }}
+              />
             </div>
           </FadeIn>
         </div>
 
         <aside className="hidden lg:block">
-          <TableOfContents headings={[]} />
+          <TableOfContents headings={post.headings} />
         </aside>
       </div>
     </article>

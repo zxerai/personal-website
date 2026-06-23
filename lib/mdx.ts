@@ -123,7 +123,7 @@ export async function getBlogPosts(locale: Locale): Promise<BlogPost[]> {
 export async function getBlogPost(
   slug: string,
   locale: Locale
-): Promise<{ frontmatter: BlogPost; content: string; availableLocales: Locale[] } | null> {
+): Promise<{ frontmatter: BlogPost; content: string; availableLocales: Locale[]; headings: Heading[] } | null> {
   const availableLocales: Locale[] = [];
   for (const loc of siteConfig.supportedLocales) {
     const filePath = path.join(blogDir(loc), `${slug}.mdx`);
@@ -140,8 +140,9 @@ export async function getBlogPost(
   const raw = await fs.readFile(filePath, 'utf-8');
   const { data, content } = matter(raw);
   const frontmatter = blogSchema.parse(data);
+  const headings = extractHeadings(content);
 
-  return { frontmatter, content, availableLocales };
+  return { frontmatter, content, availableLocales, headings };
 }
 
 export async function getResume(
@@ -178,4 +179,66 @@ export async function getAbout(
 
   const content = await fs.readFile(aboutFile(targetLocale), 'utf-8');
   return { content, availableLocales };
+}
+
+// ============================================================
+// 标题提取（用于 TOC）
+// ============================================================
+
+export interface Heading {
+  id: string;
+  text: string;
+  level: 2 | 3;
+}
+
+/**
+ * 从 MDX 文本中提取 ## 和 ### 标题
+ * - 跳过代码块（```...```) 和前置 frontmatter
+ * - id 由 text slugify 生成（lowercase + 非字母数字转 - + 合并 -）
+ */
+export function extractHeadings(content: string): Heading[] {
+  // 去掉前置 frontmatter（如果有）
+  const stripped = content.replace(/^---[\s\S]*?---\s*/, '');
+
+  const headings: Heading[] = [];
+  // 简单行扫描：识别 ## 和 ###，跳过代码块和 HTML 块
+  const lines = stripped.split('\n');
+  let inCodeBlock = false;
+
+  for (const line of lines) {
+    // 跟踪围栏代码块
+    if (line.trim().startsWith('```')) {
+      inCodeBlock = !inCodeBlock;
+      continue;
+    }
+    if (inCodeBlock) continue;
+
+    // 跳过 JSX/MDX 表达式中的 #（避免误判）
+    if (line.includes('<') && line.includes('>')) {
+      // 仍然允许简单的纯标题行
+      const trimmed = line.trim();
+      if (!trimmed.startsWith('##')) continue;
+    }
+
+    const match = line.match(/^(#{2,3})\s+(.+?)\s*$/);
+    if (match) {
+      const level = match[1].length as 2 | 3;
+      const text = match[2]
+        .replace(/[*_`]/g, '')   // 去掉 markdown 强调符
+        .replace(/\[(.+?)\]\(.+?\)/g, '$1')  // 提取链接文本
+        .trim();
+      const id = slugify(text);
+      headings.push({ id, text, level });
+    }
+  }
+  return headings;
+}
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[一-龥]+/g, (m) => m)  // 中文保留
+    .replace(/[^a-z0-9一-龥]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .replace(/-{2,}/g, '-');
 }
