@@ -16,10 +16,19 @@ export function ProjectCard({ project, locale, featured }: ProjectCardProps) {
     <Link
       href={`/${locale}/projects/${project.slug}`}
       className={cn(
-        'group block h-full rounded border border-border-subtle bg-bg-elevated p-6 transition-all duration-300',
-        'hover:-translate-y-1 hover:border-accent/40 hover:shadow-elevated'
+        'group relative block h-full overflow-hidden rounded border border-border-subtle bg-bg-elevated p-6',
+        'transition-all duration-300 ease-out',
+        'hover:-translate-y-1.5 hover:border-accent/50 hover:shadow-elevated'
       )}
     >
+      {/* 顶部 accent 边线（hover 时显示） */}
+      <span
+        className={cn(
+          'absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 transition-opacity duration-300',
+          'group-hover:opacity-100'
+        )}
+      />
+
       {featured && (
         <div className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent">
           <span className="size-1.5 rounded-full bg-accent" />
@@ -48,7 +57,7 @@ export function ProjectCard({ project, locale, featured }: ProjectCardProps) {
 
       <div className="mt-5 flex items-center justify-between text-sm">
         <span className="text-text-muted">{new Date(project.date).getFullYear()}</span>
-        <span className="text-text-secondary transition-colors group-hover:text-accent">
+        <span className="font-medium text-text-secondary transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent">
           {t('view_project')} →
         </span>
       </div>

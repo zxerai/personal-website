@@ -21,10 +21,7 @@ export function HeroBackground() {
   }, []);
 
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-    >
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       {/* 基础渐变：纯白→淡灰 */}
       <div className="absolute inset-0 bg-gradient-to-br from-bg-base via-bg-base to-bg-elevated" />
 
@@ -35,16 +32,14 @@ export function HeroBackground() {
           backgroundImage:
             'linear-gradient(to right, rgba(0,0,0,0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.5) 1px, transparent 1px)',
           backgroundSize: '48px 48px',
-          maskImage:
-            'radial-gradient(ellipse at center, black 25%, transparent 75%)',
-          WebkitMaskImage:
-            'radial-gradient(ellipse at center, black 25%, transparent 75%)',
+          maskImage: 'radial-gradient(ellipse at center, black 25%, transparent 75%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at center, black 25%, transparent 75%)',
         }}
       />
 
       {/* Aurora 主色块：accent indigo（左上） */}
       <div
-        className={`absolute -top-40 -left-40 h-[700px] w-[700px] rounded-full bg-accent/25 blur-[140px] ${
+        className={`absolute -left-40 -top-40 h-[700px] w-[700px] rounded-full bg-accent/25 blur-[140px] ${
           reducedMotion ? '' : 'animate-blob-1'
         }`}
       />
@@ -63,8 +58,7 @@ export function HeroBackground() {
       <div
         className="absolute inset-0"
         style={{
-          background:
-            'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.04) 100%)',
+          background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.04) 100%)',
         }}
       />
 
