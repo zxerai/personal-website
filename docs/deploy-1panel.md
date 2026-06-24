@@ -23,7 +23,22 @@
 
 ### 步骤
 
-#### 1. 在 1Panel 创建网站 + 反向代理
+#### 1. SSH 到服务器并拉代码
+
+```bash
+ssh root@your-server
+
+# 安装 git（如未装）
+apt update && apt install -y git  # Ubuntu/Debian
+# 或 yum install -y git  # CentOS
+
+# 拉代码
+cd /opt
+git clone https://github.com/zxerai/personal-website.git
+cd personal-website
+```
+
+#### 2. 在 1Panel 创建网站 + 反向代理
 
 进入 1Panel → **网站** → **创建网站**：
 
@@ -37,46 +52,83 @@
 
 创建后 1Panel 会自动生成 Nginx 反向代理配置，把外部 80/443 转到容器 3000。
 
-#### 2. 创建应用（Docker Compose）
+#### 3. 修改 docker-compose.yml 的 `NEXT_PUBLIC_SITE_URL`
 
-进入 1Panel → **应用商店** → 顶部搜索 "自定义" 或 **容器** → **创建容器**：
+```bash
+# 编辑环境变量
+sed -i 's|NEXT_PUBLIC_SITE_URL=https://your-domain.com|NEXT_PUBLIC_SITE_URL=https://你的域名.com|' docker-compose.yml
 
-**方式 A：直接用预构建镜像（推荐）**
+# 验证
+grep NEXT_PUBLIC_SITE_URL docker-compose.yml
+```
 
-仓库：`ghcr.io/zxerai/personal-website:latest`
+#### 4. 构建并启动容器（本地构建，默认方式）
 
-如果你的 GitHub Actions 配置了自动构建镜像（详见后文），这里填 GHCR 镜像地址。
+**方式 A：本地构建（默认 ✅）**
 
-**方式 B：本地构建**
+`docker-compose.yml` 默认配置 `build: .`，会在服务器上本地构建镜像：
 
-如果服务器上 git clone 了仓库，进入 1Panel 的"应用商店 → 自定义 Compose"，粘贴 `docker-compose.yml` 内容（或上传文件），然后启动。
+```bash
+cd /opt/personal-website
 
-#### 3. 配置环境变量
+# 构建并后台启动
+docker compose up -d --build
 
-| 变量 | 值 | 必填 |
-|---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | `https://your-domain.com` | ✅ |
-| `NODE_ENV` | `production` | ✅ |
-| `PORT` | `3000` | ✅（与反代端口一致） |
-| `HOSTNAME` | `0.0.0.0` | ✅ |
+# 查看进度（首次构建约 3-5 分钟）
+docker compose logs -f
+```
 
-#### 4. 配置域名 + SSL
+输出成功示例：
+```
+[+] Building 65.2s (15/15) FINISHED
+[+] Running 2/2
+ ✔ Network personal-website_default  Created
+ ✔ Container personal-website        Started
+```
+
+**方式 B：拉预构建镜像（进阶，需要先配置 GH Actions）**
+
+如果之前已经配置了 `.github/workflows/docker.yml` 并成功推送镜像到 GHCR，可以编辑 `docker-compose.yml`：
+
+```yaml
+services:
+  personal-website:
+    image: ghcr.io/zxerai/personal-website:latest  # 取消注释
+    # build:  # 注释掉
+    #   context: .
+    #   dockerfile: Dockerfile
+```
+
+然后：
+```bash
+docker compose pull
+docker compose up -d
+```
+
+> 镜像 GHCR 默认是私有的。要公开：在 GitHub 仓库页面 → 右上 Packages → 点击 personal-website → Package settings → Change visibility → Public。
+
+#### 5. 配置域名 + SSL
 
 1Panel → **网站** → 你的网站 → **HTTPS** → **申请 Let's Encrypt 证书** → 启用 HSTS。
 
-#### 5. 验证
+#### 6. 验证
 
 ```bash
 # SSH 到服务器
-ssh user@your-server
+ssh root@your-server
 
 # 查看容器状态
 docker ps | grep personal-website
+# 应该看到 personal-website Up X minutes (healthy)
 
 # 查看日志
 docker logs personal-website --tail 50
 
-# 访问测试
+# 容器内测试
+docker exec personal-website wget -q --spider http://localhost:3000/zh
+echo "OK"  # 应该输出 OK
+
+# 外部测试
 curl -I https://your-domain.com
 ```
 
@@ -138,52 +190,22 @@ pm2 startup  # 按提示执行返回的命令
 
 ---
 
-## 自动构建 Docker 镜像（GitHub Actions）
+## 自动构建 Docker 镜像（GitHub Actions，已预置 ✅）
 
-如果你想让 GitHub 在每次 push 时自动构建 Docker 镜像并推送到 GHCR，可以加 `.github/workflows/docker.yml`：
+仓库已包含 `.github/workflows/docker.yml`：每次 push 到 main 自动构建并推送镜像到 GHCR（`ghcr.io/zxerai/personal-website:latest`）。
 
-```yaml
-name: Docker Build & Push
+**使用步骤**：
 
-on:
-  push:
-    branches: [main]
-  workflow_dispatch:
+1. 第一次 push 触发 workflow 后，等待 Actions 跑完（约 3-5 分钟）
+2. 在 GitHub 仓库 → Actions 页面确认 workflow 成功
+3. 第一次推镜像后 GHCR 包默认是**私有**。要公开访问：
+   - GitHub 仓库 → 右上角头像 → **Your packages**
+   - 点 `personal-website` → **Package settings** → **Change visibility** → **Public**
+   - 或者在仓库 Settings → Packages → 设置默认 visibility
+4. 在服务器上编辑 `docker-compose.yml`，把 `build:` 段注释掉、取消 `image:` 注释
+5. 后续更新只要 `git pull` + `docker compose pull && docker compose up -d`
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: docker/setup-buildx-action@v3
-
-      - name: Login to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build & Push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: |
-            ghcr.io/zxerai/personal-website:latest
-            ghcr.io/zxerai/personal-website:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-```
-
-1Panel 容器配置里把 image 设为 `ghcr.io/zxerai/personal-website:latest` 即可。
-
-> GHCR 包默认是私有的。要公开：在 GitHub 仓库页面 → Packages → 权限 → Change visibility → Public。
+> **首次部署建议**：直接用本地 build（方式 A），不需要等 GitHub Actions。Actions 是后续更新优化用。
 
 ---
 
