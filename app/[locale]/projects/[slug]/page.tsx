@@ -90,7 +90,7 @@ export default async function ProjectDetailPage({ params }: Props) {
       </FadeIn>
 
       <FadeIn delay={0.2}>
-        <div className="prose prose-invert max-w-none">
+        <div className="prose prose-slate max-w-none">
           <MDXRemote
             source={content}
             components={mdxComponents}
