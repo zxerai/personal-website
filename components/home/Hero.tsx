@@ -51,8 +51,7 @@ export function Hero({ locale: _locale }: { locale: string }) {
           <h1
             className="font-display text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl lg:text-8xl"
             style={{
-              background:
-                'linear-gradient(135deg, #18181b 0%, #4f46e5 50%, #7c3aed 100%)',
+              background: 'linear-gradient(135deg, #18181b 0%, #4f46e5 50%, #7c3aed 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -92,7 +91,7 @@ export function Hero({ locale: _locale }: { locale: string }) {
           </div>
 
           {/* 统计数字条 */}
-          <div className="mt-14 grid grid-cols-3 gap-6 border-y border-border-subtle py-6 max-w-md">
+          <div className="mt-14 grid max-w-md grid-cols-3 gap-6 border-y border-border-subtle py-6">
             <Stat value="7" label="Years" />
             <Stat value="1" label="Projects" />
             <Stat value="1" label="Articles" />

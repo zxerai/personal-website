@@ -1,0 +1,101 @@
+---
+title: Personal Portfolio Website
+slug: personal-website
+description: A Next.js 14 personal portfolio currently in development: monochrome aurora background, MDX content management, TOC anchor navigation, Prose Typography, glass navbar. Bilingual (zh/en), aiming for aiking.dev-level visual refinement.
+tags: [Next.js, TypeScript, MDX, Tailwind CSS, Framer Motion, i18n]
+date: 2026-06-24
+featured: true
+external: https://github.com/zxerai/personal-website
+order: 0
+---
+
+## Background
+
+Off-the-shelf portfolio templates tend to be either too "marketing-flavored" (flashy animations + rainbow gradients) or too "blog-only" (single article list). What I wanted was the **restrained yet textured** style of aiking.dev—restrained to the extreme, but every detail whispers "this person has taste".
+
+This site isn't a demo—it's my actual long-term personal front page. So from a design perspective:
+
+- **MDX** for the content layer (not pure Markdown, not a CMS): I can write React components without leaving Markdown
+- **next-intl** for i18n, route-level `[locale]` switching, clean `/zh` `/en` URLs
+- **@tailwindcss/typography** + custom prose styles for readability-first articles
+- **Framer Motion + GSAP + Lenis** for animation, but all dialed back to "barely moving" restraint
+
+## Architecture
+
+```
+Next.js 14 App Router
+├── app/[locale]/
+│   ├── layout.tsx        # Root layout (fonts, theme, NextIntlClientProvider, LenisProvider)
+│   ├── page.tsx          # Home (Hero + FeaturedProjects + RecentBlog)
+│   ├── projects/         # Projects list + detail
+│   ├── blog/             # Blog list + detail (with TOC)
+│   ├── resume/           # Resume (MDX)
+│   ├── about/            # About (MDX)
+│   └── not-found.tsx     # 404
+├── content/              # MDX content (Git-tracked, versioned)
+│   ├── projects/{zh,en}/ # Project cards
+│   ├── blog/{zh,en}/     # Blog posts
+│   ├── resume/           # Resume
+│   └── about/            # About
+├── components/
+│   ├── ui/               # Buttons etc.
+│   ├── motion/           # LenisProvider, FadeIn, Magnetic, Typewriter
+│   ├── layout/           # Navbar, Footer, LanguageSwitcher
+│   ├── mdx/              # Custom MDX renderers (CodeBlock, SmartLink, Heading, Callout)
+│   ├── home/             # Hero, HeroBackground, FeaturedProjects, RecentBlog
+│   ├── projects/         # ProjectCard
+│   └── blog/             # BlogCard, TableOfContents
+├── lib/
+│   ├── mdx.ts            # MDX loading / heading extraction
+│   ├── i18n.ts           # next-intl config
+│   ├── schemas/          # Zod schemas (project / blog frontmatter)
+│   └── utils.ts          # cn(), formatDate(), siteConfig
+├── messages/             # zh.json / en.json
+├── styles/               # globals.css + tokens.css
+└── scripts/              # content:check validator
+```
+
+## Implemented
+
+- ✅ Route-level bilingual (`/zh/*` `/en/*`), clean URLs
+- ✅ MDX content + Zod schema validation + build-time `content:check`
+- ✅ Content fallback (English missing → fallback to Chinese)
+- ✅ Glass navbar (frosted glass on scroll)
+- ✅ Monochrome aurora background (Stripe-style, 60-80s slow drift)
+- ✅ Hero: status badge ("Available for work" pulsing green dot), main name tricolor gradient, stats row
+- ✅ ProjectCard: hover reveals top accent border + 1.5px lift + arrow slide
+- ✅ BlogCard: time column + title + tags
+- ✅ Article detail: prose typography + rounded tables + code block copy button + TOC (github-slugger-aligned IDs)
+- ✅ Smooth scroll (Lenis) + anchor navigation (global click handler)
+- ✅ Typewriter text reveal + Magnetic buttons
+- ✅ SEO: sitemap.ts / robots.ts / OG image API route
+- ✅ Error pages: route-level error.tsx + global global-error.tsx
+- ✅ 404 page + responsive (mobile/tablet/desktop breakpoints)
+- ✅ Performance: next/image, next/font, SSG / ISR
+
+## In Progress (Next Up)
+
+- 📝 Add more real project entries (currently only langchain-rag)
+- 📝 Bilingual blog: Chinese first, English translations selective
+- 📝 Resume page with more structured timeline component (currently bare MDX)
+- 📝 RSS Feed
+- 📝 Algolia search (when content grows)
+- 📝 Dark / light theme toggle (currently locked to light)
+- 📝 Resume PDF download (via `@react-pdf/renderer`)
+- 📝 Dynamic OG image generation per article
+
+## Deployment
+
+- Target: **Vercel** (zero-config, CDN, auto-HTTPS)
+- Trigger: `git push main` → Vercel auto-build → production
+- Preview: each PR auto-generates a preview URL
+- Domain: starting with `jiaiiac.vercel.app`, custom domain later
+
+## Lessons Learned
+
+- **TypeScript strict mode** catches a ton of edge-case bugs at compile time
+- **next-intl + route-level `[locale]`** is cleaner than `next-i18next` (native App Router support)
+- **MDX + Zod schema + build-time validation** = content freedom without site breakage
+- **Tailwind Typography** removes the need to hand-write prose styles, while still allowing deep customization
+- **Lenis smooth scroll** enhances feel, but be careful: it hijacks anchor jumps—you need a global click handler
+- **Recommend validating before commit**: dev + build artifacts can conflict (I hit a `.next server can't find vendor-chunks` issue mid-project)

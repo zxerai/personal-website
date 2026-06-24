@@ -1,0 +1,101 @@
+---
+title: 个人作品集网站
+slug: personal-website
+description: 当前正在开发的 Next.js 14 个人作品集网站：单色 aurora 背景、MDX 内容管理、TOC 锚点跳转、Prose Typography 排版、玻璃态导航栏。支持中英双语，目标 aiking.dev 级别视觉精致度。
+tags: [Next.js, TypeScript, MDX, Tailwind CSS, Framer Motion, i18n]
+date: 2026-06-24
+featured: true
+external: https://github.com/zxerai/personal-website
+order: 0
+---
+
+## 项目背景
+
+市面上现成的个人作品集模板，要么太"营销感"（花哨动画 + 渐变色块）、要么太"博客"（单一文章列表）。我想要的，是**aiking.dev 那种克制冷峻但有质感**的风格——克制到极致，但每个细节都在说"这人有审美"。
+
+这个站不是 demo，是我自己真正要长期维护的个人门面。所以从设计上：
+
+- 内容层用 **MDX**（不是纯 Markdown，也不是 CMS），保证我可以写 React 组件而不用脱离 Markdown
+- 国际化用 **next-intl**，路由级 `[locale]` 切换，URL `/zh` `/en` 干净
+- 排版用 **@tailwindcss/typography** + 自定义 prose 样式，让文章可读性第一
+- 动效用 **Framer Motion + GSAP + Lenis**，但都收敛到"几乎不动"的克制状态
+
+## 技术架构
+
+```
+Next.js 14 App Router
+├── app/[locale]/
+│   ├── layout.tsx        # 根布局（字体、主题、NextIntlClientProvider、LenisProvider）
+│   ├── page.tsx          # 首页（Hero + FeaturedProjects + RecentBlog）
+│   ├── projects/         # 项目列表 + 详情
+│   ├── blog/             # 博客列表 + 详情（含 TOC）
+│   ├── resume/           # 简历（MDX）
+│   ├── about/            # 关于我（MDX）
+│   └── not-found.tsx     # 404
+├── content/              # MDX 内容（Git 追踪版本化）
+│   ├── projects/{zh,en}/ # 项目卡片
+│   ├── blog/{zh,en}/     # 博客文章
+│   ├── resume/           # 简历
+│   └── about/            # 关于我
+├── components/
+│   ├── ui/               # Button 等基础组件
+│   ├── motion/           # LenisProvider、FadeIn、Magnetic、Typewriter
+│   ├── layout/           # Navbar、Footer、LanguageSwitcher
+│   ├── mdx/              # MDX 自定义渲染（CodeBlock、SmartLink、Heading、Callout）
+│   ├── home/             # Hero、HeroBackground、FeaturedProjects、RecentBlog
+│   ├── projects/         # ProjectCard
+│   └── blog/             # BlogCard、TableOfContents
+├── lib/
+│   ├── mdx.ts            # MDX 加载 / 标题提取
+│   ├── i18n.ts           # next-intl 配置
+│   ├── schemas/          # Zod schema（project / blog frontmatter）
+│   └── utils.ts          # cn()、formatDate()、siteConfig
+├── messages/             # zh.json / en.json（i18n 字符串）
+├── styles/               # globals.css + tokens.css
+└── scripts/              # content:check 校验脚本
+```
+
+## 已实现功能
+
+- ✅ 路由级中英双语（`/zh/*` `/en/*`），URL 干净
+- ✅ MDX 内容管理 + Zod schema 校验 + 构建期 `content:check`
+- ✅ 内容回退（英文版缺失时自动 fallback 到中文版）
+- ✅ 玻璃态 navbar（滚动时毛玻璃）
+- ✅ 单色 aurora 背景（Stripe 风格，60-80s 极慢漂移）
+- ✅ Hero：状态徽章（"Available for work" 绿点 ping）、主名字三色渐变、统计数字条
+- ✅ ProjectCard：hover 时顶部 accent 边线 + lift 1.5px + 箭头右滑
+- ✅ BlogCard：时间列 + 标题 + tags
+- ✅ 文章详情页：prose 排版 + 表格圆角 + 代码块复制按钮 + TOC（基于 github-slugger 一致 ID）
+- ✅ 平滑滚动（Lenis）+ 锚点跳转（全局 click handler 拦截）
+- ✅ Typewriter 文字逐字出现 + Magnetic 磁性按钮
+- ✅ SEO：sitemap.ts / robots.ts / OG image API route
+- ✅ 错误页：route-level error.tsx + 全局 global-error.tsx
+- ✅ 404 页面 + 响应式（移动 / 平板 / 桌面断点）
+- ✅ 性能优化：next/image、next/font、SSG / ISR
+
+## 开发中（接下来要做）
+
+- 📝 添加更多真实项目案例（目前只有 langchain-rag 一条）
+- 📝 中英双语博客：先中文为主，英文版选择性翻译
+- 📝 简历页用更结构化的时间线组件（目前是裸 MDX）
+- 📝 RSS Feed
+- 📝 Algolia 站内搜索（文章多了再加）
+- 📝 暗色 / 亮色主题切换（目前锁定亮色）
+- 📝 简历 PDF 下载（用 `@react-pdf/renderer`）
+- 📝 OG 图生成器（已有基础，需要给每篇文章动态生成）
+
+## 部署
+
+- 目标平台：**Vercel**（零配置、CDN、自动 HTTPS）
+- 部署触发：`git push main` → Vercel 自动构建 → 生产环境
+- 预览：每个 PR 自动生成独立 preview URL
+- 域名：先用 `jiaiiac.vercel.app`，后续可绑自定义域名
+
+## 经验总结
+
+- **TypeScript 严格模式**帮我在编译期抓到一堆边界 bug
+- **next-intl + 路由级 `[locale]`** 比 `next-i18next` 干净（App Router 原生支持）
+- **MDX + Zod schema + 构建期校验** = 内容自由度的同时保证站点不挂
+- **Tailwind Typography** 让我不用手写 prose 样式，但仍能深度定制
+- **Lenis 平滑滚动** 提升体感，但要注意接管锚点跳转要写全局 handler
+- **GitHub 提交时建议先 dev 验证 + 跑构建**：我中途遇到过 dev 和 build 产物冲突导致 .next server 找不到 vendor-chunks 的坑
