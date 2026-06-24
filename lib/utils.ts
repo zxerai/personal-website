@@ -42,9 +42,9 @@ export const siteConfig = {
   defaultLocale: 'zh' as const,
   supportedLocales: ['zh', 'en'] as const,
   social: {
-    github: 'https://github.com/jiaiiac',
+    github: 'https://github.com/zxerai',
     twitter: '',
-    email: 'hi@example.com',
+    email: 'zxy3027765273@gmail.com',
   },
 } as const;
 
