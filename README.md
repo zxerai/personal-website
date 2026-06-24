@@ -173,6 +173,34 @@ slug 必须中英一致，文件命名 `<slug>.mdx`。
 - [Framer Motion](https://www.framer.com/motion/) - 动画
 - [next-intl](https://next-intl-docs.vercel.app/) - 国际化
 
+## 部署
+
+### Vercel（最简）
+
+推送代码后到 [vercel.com](https://vercel.com) 导入仓库即可。
+
+### 1Panel（国内服务器，推荐）
+
+仓库已配好 Docker 多阶段构建：
+
+```bash
+# 1Panel 控制台 → 应用商店 → 自定义 Compose
+# 粘贴 docker-compose.yml 内容（修改 NEXT_PUBLIC_SITE_URL）
+# 启动容器即可
+```
+
+详细步骤见 [docs/deploy-1panel.md](docs/deploy-1panel.md)。包含：
+
+- Docker Compose 部署（推荐）
+- PM2 + Node.js 部署（备选）
+- GitHub Actions 自动构建镜像
+- 反向代理 + SSL + 域名配置
+- 常见问题排查
+
+### GitHub Container Registry 自动构建
+
+`.github/workflows/docker.yml` 可选添加，push main 后自动构建并推送到 GHCR。
+
 ## License
 
 MIT
