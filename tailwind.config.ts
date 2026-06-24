@@ -74,9 +74,9 @@ const config: Config = {
       },
       animation: {
         'fade-in-up': 'fade-in-up 0.6s cubic-bezier(0.21, 0.47, 0.32, 0.98)',
-        'blob-1': 'blob-1 28s ease-in-out infinite',
-        'blob-2': 'blob-2 35s ease-in-out infinite',
-        'blob-3': 'blob-3 32s ease-in-out infinite',
+        'blob-1': 'blob-1 60s ease-in-out infinite',
+        'blob-2': 'blob-2 80s ease-in-out infinite',
+        'blob-3': 'blob-3 70s ease-in-out infinite',
         shimmer: 'shimmer 3s linear infinite',
       },
     },

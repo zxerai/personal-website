@@ -105,28 +105,6 @@
   .text-gradient-accent {
     @apply bg-gradient-to-br from-accent to-accent-hover bg-clip-text text-transparent;
   }
-
-  /* 3D 浮雕文字（克制版：3 层硬阴影 + 1 层柔光，做凸起但不模糊） */
-  .text-3d {
-    text-shadow:
-      0 1px 0 rgba(0, 0, 0, 0.05),
-      0 2px 0 rgba(0, 0, 0, 0.04),
-      0 3px 0 rgba(0, 0, 0, 0.03),
-      0 4px 8px rgba(99, 102, 241, 0.10);
-  }
-
-  /* 浮动动画 */
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-6px);
-    }
-  }
-  .animate-float {
-    animation: float 5s ease-in-out infinite;
-  }
 }
 
 /* ==========================================================================

@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react';
 
 /**
- * 主页 Hero 背景层：aurora/mesh gradient 风格
- * - 基础柔和渐变 + 4 个大模糊色块（accent + violet + sky + emerald）
- * - 每个色块用 CSS keyframe 慢速漂移（28-35s 循环）
- * - 微弱网格（带 radial mask 中心强边缘弱）+ 噪点叠加
+ * 主页 Hero 背景层：单色 Aurora（Stripe 风格）
+ * - 基础柔和渐变 + 2 个大模糊色块（同色系 indigo + violet 浅）
+ * - 极慢漂移（60-80s）—— 几乎不动但能感觉到活着
+ * - 微弱网格 + 中心下方光晕 + 四角 vignette + 噪点
  * - prefers-reduced-motion 时静态显示
  */
 export function HeroBackground() {
@@ -21,52 +21,52 @@ export function HeroBackground() {
   }, []);
 
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      {/* 基础渐变底色 */}
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+    >
+      {/* 基础渐变：纯白→淡灰 */}
       <div className="absolute inset-0 bg-gradient-to-br from-bg-base via-bg-base to-bg-elevated" />
 
-      {/* 网格底纹（radial mask：中心强、边缘淡出） */}
+      {/* 网格底纹（更淡） */}
       <div
-        className="absolute inset-0 opacity-[0.05]"
+        className="absolute inset-0 opacity-[0.04]"
         style={{
           backgroundImage:
             'linear-gradient(to right, rgba(0,0,0,0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.5) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-          maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 80%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 80%)',
+          backgroundSize: '48px 48px',
+          maskImage:
+            'radial-gradient(ellipse at center, black 25%, transparent 75%)',
+          WebkitMaskImage:
+            'radial-gradient(ellipse at center, black 25%, transparent 75%)',
         }}
       />
 
-      {/* Aurora 色块 1：accent 紫（主色调，左上） */}
+      {/* Aurora 主色块：accent indigo（左上） */}
       <div
-        className={`absolute -left-32 -top-32 h-[600px] w-[600px] rounded-full bg-accent/35 blur-[120px] ${
+        className={`absolute -top-40 -left-40 h-[700px] w-[700px] rounded-full bg-accent/25 blur-[140px] ${
           reducedMotion ? '' : 'animate-blob-1'
         }`}
       />
 
-      {/* Aurora 色块 2：violet 紫（右上） */}
+      {/* Aurora 副色块：violet 浅紫（右下，更小更淡） */}
       <div
-        className={`absolute -right-40 top-1/4 h-[500px] w-[500px] rounded-full bg-violet-400/25 blur-[140px] ${
+        className={`absolute -bottom-32 -right-32 h-[600px] w-[600px] rounded-full bg-violet-300/20 blur-[140px] ${
           reducedMotion ? '' : 'animate-blob-2'
         }`}
       />
 
-      {/* Aurora 色块 3：sky 蓝（左下） */}
-      <div
-        className={`absolute -bottom-32 left-1/4 h-[550px] w-[550px] rounded-full bg-sky-300/20 blur-[140px] ${
-          reducedMotion ? '' : 'animate-blob-3'
-        }`}
-      />
+      {/* 中心下方光晕（极淡，聚焦 Hero 文字） */}
+      <div className="absolute left-1/2 top-2/3 h-[400px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/[0.07] blur-[160px]" />
 
-      {/* Aurora 色块 4：emerald 绿（角落点缀） */}
+      {/* Vignette：四角暗角，让中心 Hero 文字更聚焦 */}
       <div
-        className={`absolute right-1/4 top-2/3 h-[300px] w-[300px] rounded-full bg-emerald-300/15 blur-[100px] ${
-          reducedMotion ? '' : 'animate-blob-1'
-        }`}
+        className="absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.04) 100%)',
+        }}
       />
-
-      {/* 中心下方光晕 */}
-      <div className="absolute left-1/2 top-3/4 h-[400px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/10 blur-[150px]" />
 
       {/* 噪点叠加 */}
       <div
