@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# Production
+build/
+
+# Testing
+coverage/
+playwright-report/
+test-results/
+tests/
+
+# Misc
+.DS_Store
+*.pem
+.vscode/
+.idea/
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Local env
+.env*.local
+.env
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+
+# Agent tooling
+.claude/
+.meta-kim/
+.cursorrules
+
+# Editor
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Docs (文档不进镜像)
+docs/
+
+# README / 设计文档
+README.md
+*.design.md
+2026-*.md

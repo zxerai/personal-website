@@ -1,0 +1,57 @@
+# =============================================================================
+# Personal Website - Docker Compose
+# 适用于 1Panel / Portainer / 任何支持 Docker Compose 的面板
+# =============================================================================
+
+services:
+  personal-website:
+    image: ghcr.io/zxerai/personal-website:latest
+    # 如果是本地构建，取消下面注释并注释掉 image 行：
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    container_name: personal-website
+    restart: unless-stopped
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      # 必填：站点完整 URL（用于 sitemap、OG、canonical）
+      - NEXT_PUBLIC_SITE_URL=https://your-domain.com
+      # 可选：分析（暂未启用）
+      # - NEXT_PUBLIC_GA_ID=
+      # - NEXT_PUBLIC_UMAMI_ID=
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+
+    # 健康检查（1Panel / Docker 自动检测）
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/zh"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+    # 资源限制（防止吃光服务器）
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
+
+    # 日志（1Panel 会自动收集）
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    # 时区
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+# 1Panel 提示：此 compose 文件可直接放在 1Panel 的"应用商店 → 自定义 Compose"中部署
+# 也可手动在服务器上 `docker compose up -d` 启动
